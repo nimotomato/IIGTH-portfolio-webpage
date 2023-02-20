@@ -1,13 +1,12 @@
-import logo from './logo.svg';
 import './App.css';
 import { useState  } from 'react';
 
 function App() {
-
+  // The local port we run the express API on
   const apiUrl = "http://localhost:3000/api/news";
-  // const [news, setNews] = useState();
 
-//Placeholder dates
+
+  //Placeholder dates, later converted into input values.
   const dates = {startDate: new Date('February 18, 2022').toISOString(), endDate: new Date('February 20, 2024').toISOString()}
   const queryString = new URLSearchParams(dates)
 
@@ -23,8 +22,6 @@ function App() {
     .catch((error) => {
       console.error('Error:', error);
     });
-
-  console.log("well something ran")
 
 
   return (
