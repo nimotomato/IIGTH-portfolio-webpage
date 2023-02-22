@@ -1,6 +1,4 @@
-// Calculate sum of label per region 
 export class Geomath {
-
     // Count labels from prisma query, takes json-data as input.
     static countLabels = (regionLabels) => {
         // Map to count labels by region

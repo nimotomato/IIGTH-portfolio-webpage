@@ -17,31 +17,21 @@ function App() {
 
   let newsData;
 
-  // Fetch news from API
-  fetch(`${apiUrl}?${queryString}`)
-    .then(response => {
-    // Check response
-      if (!response.ok) {
-        throw new Error('Network response not 200');
-      }
-      return response.json();
-    })
-    // Count labels grouped by region.
-    .then((data) => {
-      const labelCount = Geomath.countLabels(data);
-      const regionRatios = Geomath.getOdds(labelCount);
-      console.log(regionRatios);
+  // Fetch news from API and calculate the odds
+  async function handleFetchOdds(){
+    try {
+      const response = await fetch(`${apiUrl}?${queryString}`).json();
+      const labelCount = await Geomath.countLabels(response);
+      const regionRatios = await Geomath.getOdds(labelCount);
+      return regionRatios;
+    } catch (e) {
+      console.log(e);
     }
-    )
-    .catch((error) => {
-      console.error('Error:', error);
-    });
-  
-
-
+    return null;
+  }
 
   return (
-    <Geomap newsdata={newsData}/>
+    <Geomap onFetchData={handleFetchOdds}/>
   )
 }
 
