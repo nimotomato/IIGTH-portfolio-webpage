@@ -1,5 +1,9 @@
 import './App.css';
+import Geomap from './Geomap';
+
 import { useState  } from 'react';
+import { Geomath } from './helpers/Geomath'
+
 
 function App() {
   // The local port we run the express API on

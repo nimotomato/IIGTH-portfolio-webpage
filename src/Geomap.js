@@ -1,14 +1,18 @@
 import { ComposableMap, Geographies, Geography } from "react-simple-maps";
 // import { scaleLinear } from "d3-scale";
+
 import { useState, useEffect } from "react";
+
 
 // Get topoJSONdata from local folder.
 import continents from './data/continents.json';
 
 // YOU GOTTA MAP THE ODDS FROM THE NEWS ONTO THE CORRECT FUCKINT PROPERTY OKAY?? THGEN JUST GO 
 
+
 // Set color scale
 // const colorScale = scaleLinear().domain([0, 100]).range(['#FFF', "#06F"])
+
 
 const Geomap = ( {onFetchData} ) => {
   const [queryData, setQueryData] = useState({});
@@ -48,7 +52,6 @@ const Geomap = ( {onFetchData} ) => {
         </Geographies>
       </ComposableMap>
     )
-  
 }
  
 export default Geomap;
