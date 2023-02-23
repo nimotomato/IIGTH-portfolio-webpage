@@ -1,53 +1,107 @@
 import '../css/App.css';
 import Geomap from './Geomap';
+import Datepicker from './Datepicker';
+import Legend from './Legend';
 
 import { useState, useEffect } from "react";
 import { Geomath } from '../helpers/Geomath';
+import { useForkRef } from '@mui/material';
 
 
 function App() {
-  // The local port we run the express API on
-  const apiUrl = "http://localhost:3000/api/news";
+  // The local endpoint we run the express API on
+  const apiUrl = "http://localhost:3000/api/";
 
 
-  //Placeholder dates, later converted into input values.
-  const dates = {startDate: new Date('February 18, 2022').toISOString(), endDate: new Date('February 20, 2024').toISOString()}
-  // Turn the dates into URL serach params used to fetch labels within a time span.
-  const queryString = new URLSearchParams(dates)
-
-
-  // Fetch query data from API 
-  async function handleFetchData() {
+  // Get date min/max range
+  async function handleFetchDates() {
     try {
-      const response = await fetch(`${apiUrl}?${queryString}`);
+      const response = await fetch(`${apiUrl}dates`);
       return response.json();
     } catch (e) {
       console.log(e);
     }
-    return null;
-    }
+  }
 
 
-  // This hook updates odds on change. If only this is called it will call indefinetly as the promise updates the state on fullfillment.
-  const [odds, setOdds] = useState({});
+  // This is states for the dates used in API search query
+  const [chosenDates, setChosenDates] = useState();
 
 
-  // Calculate odds based on the query data
-  async function handleGetOdds() {
-    const queryData = await handleFetchData();
-    if (queryData){
-      const labelCount = await Geomath.countLabels(queryData);
-      const regionRatios = await Geomath.getOdds(labelCount);
-      setOdds(regionRatios);
-      console.log("pop")
-    } else {
-      console.log("Fetch error, data not found")
+  // Run the fetch on component load, parse data and set chosenDates
+  useEffect(() => {
+    handleFetchDates().then((data) => {     
+      // Create the default days (min, max) for the query string
+      setChosenDates([data[0].startDate, data[0].endDate])
+    })}, [])
+
+    
+  // State for the query strings to fetch news data from API
+  const [queryString, setQueryString] = useState()
+
+
+  // Set query string
+  const handleQueryString = (chosenDates) => {
+    if (chosenDates){
+      const dateQuery = new URLSearchParams({startDate: chosenDates[0], endDate: chosenDates[1]});
+      const searchQuery = (`${apiUrl}news?${dateQuery}`);
+      setQueryString(searchQuery);
     }
   }
 
 
-  // Call handleFetchData once on load. Change the dependcy array to change on date change!
-  useEffect(() => {handleGetOdds()}, [])
+  // Updates querystring every time the chosen dates change
+  useEffect(() => {
+    handleQueryString(chosenDates);
+  }, [chosenDates]);
+
+
+  // Fetch query data from API 
+  async function handleFetchNews(queryString) {
+    if (queryString){
+      const response = await fetch(`${queryString}`);
+      return response.json();
+    }
+    return null;
+    }
+  
+
+  // State for our news data
+  const [newsData, setNewsData] = useState();
+  
+
+  // Updates news every time queryString changes
+  useEffect(() => {
+    handleFetchNews(queryString).then((data) => {
+      setNewsData(data);
+    })
+  }, [queryString])
+
+
+  // State for news odds
+  const [odds, setOdds] = useState({});
+
+
+  // Calculate odds based on the query data
+  const handleGetOdds = (newsData) => {
+    if (newsData){
+      const labelCount = Geomath.countLabels(newsData);
+      const regionRatios = Geomath.getOdds(labelCount);
+      setOdds(regionRatios);
+    } 
+  }
+
+
+  // Update odds on new newsData
+  useEffect(() => {handleGetOdds(newsData)}, [newsData])
+
+
+  // Make sure date picker is only loaded after dates have been fetched
+  const renderDatePicker = (chosenDates) => {
+    if (chosenDates){
+      return (<Datepicker chosenDates={chosenDates}/>)
+    }
+  }
 
 
   return (
@@ -56,6 +110,8 @@ function App() {
       <div className="map-container">
         <Geomap odds={odds}/>
       </div>
+      {renderDatePicker(chosenDates)}
+      <Legend regionData={odds}/>
     </div>
   )
 }
