@@ -1,6 +1,6 @@
 export class Geomath {
     // Count labels from prisma query, takes json-data as input.
-    // This should probably be moved to API-side. 
+    // This should probably be moved to API-side but then it must be TS lul. 
     static countLabels = (regionLabels) => {
         // Map to count labels by region
         const regions = new Map();    
