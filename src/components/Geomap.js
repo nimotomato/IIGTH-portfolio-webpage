@@ -7,6 +7,9 @@ import {
 } from "react-simple-maps";
 
 
+import Legend from './Legend';
+
+
 // Get topoJSONdata from local folder.
 import topoUrl from '../data/continents.json';
 
@@ -30,16 +33,18 @@ const Geomap = ( {odds} ) => {
       <ComposableMap 
         projectionConfig={{
           rotate: [-10, 0, 0],
-          scale: 80,
+          scale: 60,
         }}
-        width={600}
-        height={300}
+        width={800}
+        height={400}
+        style={{ margin: '-20rem' }}
         projection="geoEqualEarth" //geoAzimuthalEqualArea
       >
       <Sphere 
         id="1" 
         stroke="darkslategrey" 
-        strokeWidth={0.5} />
+        strokeWidth={0.5}
+        />
       <Geographies 
         geography={topoUrl}>
         {({ geographies }) =>
@@ -55,6 +60,7 @@ const Geomap = ( {odds} ) => {
         }
       </Geographies>
     </ComposableMap>
+    <Legend regionData={odds}/>
   </div>
   )
 }

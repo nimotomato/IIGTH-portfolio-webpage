@@ -39,21 +39,26 @@ function App() {
       const labelCount = await Geomath.countLabels(queryData);
       const regionRatios = await Geomath.getOdds(labelCount);
       setOdds(regionRatios);
+      console.log("pop")
     } else {
       console.log("Fetch error, data not found")
     }
   }
 
 
-  // Call handleFetchData once on load and on update.
+  // Call handleFetchData once on load. Change the dependcy array to change on date change!
   useEffect(() => {handleGetOdds()}, [])
 
 
   return (
-    <div>
-      <Geomap odds={odds}/>
+    <div className="content-container">
+      <h1 className="main-title">Is it going to hell?</h1>
+      <div className="map-container">
+        <Geomap odds={odds}/>
+      </div>
     </div>
   )
 }
+
 
 export default App;
