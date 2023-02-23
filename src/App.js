@@ -2,7 +2,6 @@ import './App.css';
 import Geomap from './Geomap';
 
 import { useState  } from 'react';
-import { Geomath } from './helpers/Geomath'
 
 
 function App() {
@@ -15,23 +14,20 @@ function App() {
   const queryString = new URLSearchParams(dates)
 
 
-  let newsData;
-
   // Fetch news from API and calculate the odds
   async function handleFetchOdds(){
     try {
-      const response = await fetch(`${apiUrl}?${queryString}`).json();
-      const labelCount = await Geomath.countLabels(response);
-      const regionRatios = await Geomath.getOdds(labelCount);
-      return regionRatios;
+      const response = await fetch(`${apiUrl}?${queryString}`);
+      return response.json();
     } catch (e) {
       console.log(e);
     }
     return null;
   }
 
-  return (
-    <Geomap onFetchData={handleFetchOdds}/>
+  return (<div>
+      <Geomap onFetchData={handleFetchOdds}/>
+    </div>
   )
 }
 
