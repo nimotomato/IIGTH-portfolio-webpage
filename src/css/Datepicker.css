@@ -1,12 +1,12 @@
-
-.date-picker-box{
-    position: relative;
-    width: 250px; /* set the width of the box to match the slider */
-    margin: auto; /* use auto margins to center the box horizontally */
+.datepicker-wrapper{
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-#input-slider{
-    text-align: center;
-    font-family: 'Montserrat', sans-serif;
-    text-transform: uppercase;
+.datepicker-container{
+    display: grid;
+    grid-template-columns: 140px 140px;
+    width: fit-content;
 }
+

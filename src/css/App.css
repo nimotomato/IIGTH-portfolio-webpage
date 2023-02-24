@@ -1,3 +1,7 @@
+body{
+    font-family: 'Montserrat', sans-serif;
+}
+
 .main-title{
     font-size: 80px;
     text-align: center;
@@ -8,6 +12,9 @@
 }
 
 .map-container{
+    display: grid;
+    grid-template-columns: 330px auto;
     margin: 0px;
+    width: 80vw;
 }
 

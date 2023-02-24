@@ -20,7 +20,8 @@ const Geomap = ( {odds} ) => {
   };      
 
   // Set color scale for displaying odds
-  const colorScale = scaleLinear([0, 1], ["coral", "antiquewhite"]);
+  // TO DO: Make legend and geomap share these values
+  const colorScale = scaleLinear([0.2, 0.7], ["antiquewhite", "coral"]);
 
 
   return (
@@ -28,11 +29,10 @@ const Geomap = ( {odds} ) => {
       <ComposableMap 
         projectionConfig={{
           rotate: [-10, 0, 0],
-          scale: 60,
+          scale: 120,
         }}
         width={800}
         height={400}
-        style={{ margin: '-20rem' }}
         projection="geoEqualEarth" //geoAzimuthalEqualArea
       >
       <Sphere 
