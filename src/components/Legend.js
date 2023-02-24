@@ -21,7 +21,7 @@ const Legend = (regionData) => {
     }
 
     // Set color scale for background color.
-    const colorScale = scaleLinear([0, 1], ["coral", "antiquewhite"]);
+    const colorScale = scaleLinear([0.2, 0.7], ["antiquewhite", "coral"]);
 
 
     const [listItems, setListItems] = useState([])

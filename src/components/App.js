@@ -2,6 +2,7 @@ import '../css/App.css';
 import Geomap from './Geomap';
 import Datepicker from './Datepicker';
 import Legend from './Legend';
+import Description from './Description';
 
 import { useState, useEffect, useMemo } from "react";
 import { Geomath } from './Geomath';
@@ -9,6 +10,8 @@ import { useForkRef } from '@mui/material';
 
 
 function App() {
+  // TODO: Change odds into probability OR make them interchangeable
+
   // The local endpoint we run the express API on
   const apiUrl = "http://localhost:3000/api/";
 
@@ -33,17 +36,11 @@ function App() {
 
   // Run the fetch on component load
   useEffect(() => {
-    
     handleFetchDates()}, [])
-
-  useEffect(() => {
-    console.log(chosenDates)}, [chosenDates])
 
 
   // Handle chosen dates, used in datepicker component
   const handleChosenDates = (dates) => {
-    console.log("Activated", dates)
-    console.log("chosen dates: ", dates)
     setChosenDates(dates);
   } 
 
@@ -104,7 +101,8 @@ function App() {
   const handleGetOdds = (newsData) => {
     if (newsData){
       const labelCount = Geomath.countLabels(newsData);
-      const regionRatios = Geomath.getOdds(labelCount);
+      console.log(labelCount)
+      const regionRatios = Geomath.getProbability(labelCount);
       setOdds(regionRatios);
     } 
   }
@@ -126,8 +124,10 @@ function App() {
     <div className="content-container">
       <h1 className="main-title">Is it going to hell?</h1>
       <div className="map-container">
+        <Description />
         <Geomap odds={odds}/>
       </div>
+      
       {renderDatePicker(chosenDates, handleChosenDates)}
       <Legend regionData={odds}/>
     </div>
