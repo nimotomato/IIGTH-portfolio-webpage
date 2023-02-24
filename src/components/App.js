@@ -3,8 +3,8 @@ import Geomap from './Geomap';
 import Datepicker from './Datepicker';
 import Legend from './Legend';
 
-import { useState, useEffect } from "react";
-import { Geomath } from '../helpers/Geomath';
+import { useState, useEffect, useMemo } from "react";
+import { Geomath } from './Geomath';
 import { useForkRef } from '@mui/material';
 
 
@@ -13,36 +13,48 @@ function App() {
   const apiUrl = "http://localhost:3000/api/";
 
 
+  // This is states for the dates used in API search query
+  const [chosenDates, setChosenDates] = useState();
+
+
   // Get date min/max range
   async function handleFetchDates() {
     try {
       const response = await fetch(`${apiUrl}dates`);
-      return response.json();
+      const data = await response.json();
+      // Create the default days (min, max) for the query string
+      const startdate = data[0].startDate.split("T")[0]
+      const endDate = data[0].endDate.split("T")[0]
+      setChosenDates([startdate, endDate])
     } catch (e) {
       console.log(e);
     }
   }
 
-
-  // This is states for the dates used in API search query
-  const [chosenDates, setChosenDates] = useState();
-
-
-  // Run the fetch on component load, parse data and set chosenDates
+  // Run the fetch on component load
   useEffect(() => {
-    handleFetchDates().then((data) => {     
-      // Create the default days (min, max) for the query string
-      setChosenDates([data[0].startDate, data[0].endDate])
-    })}, [])
-
     
+    handleFetchDates()}, [])
+
+  useEffect(() => {
+    console.log(chosenDates)}, [chosenDates])
+
+
+  // Handle chosen dates, used in datepicker component
+  const handleChosenDates = (dates) => {
+    console.log("Activated", dates)
+    console.log("chosen dates: ", dates)
+    setChosenDates(dates);
+  } 
+
+
   // State for the query strings to fetch news data from API
   const [queryString, setQueryString] = useState()
 
 
   // Set query string
   const handleQueryString = (chosenDates) => {
-    if (chosenDates){
+    if (chosenDates && chosenDates[0] && chosenDates[1]){
       const dateQuery = new URLSearchParams({startDate: chosenDates[0], endDate: chosenDates[1]});
       const searchQuery = (`${apiUrl}news?${dateQuery}`);
       setQueryString(searchQuery);
@@ -58,11 +70,17 @@ function App() {
 
   // Fetch query data from API 
   async function handleFetchNews(queryString) {
+    const abortCont = new AbortController();
     if (queryString){
-      const response = await fetch(`${queryString}`);
-      return response.json();
+      try{
+        const response = await fetch(`${queryString}`, {signal: abortCont.signal});
+        return response.json();
+      } catch (e) {
+        console.log(e)
+      }
     }
-    return null;
+    abortCont.abort();
+    console.log(abortCont.signal)
     }
   
 
@@ -97,9 +115,9 @@ function App() {
 
 
   // Make sure date picker is only loaded after dates have been fetched
-  const renderDatePicker = (chosenDates) => {
+  const renderDatePicker = (chosenDates, handleChosenDates) => {
     if (chosenDates){
-      return (<Datepicker chosenDates={chosenDates}/>)
+      return (<Datepicker chosenDates={chosenDates} onChose={handleChosenDates}/>)
     }
   }
 
@@ -110,7 +128,7 @@ function App() {
       <div className="map-container">
         <Geomap odds={odds}/>
       </div>
-      {renderDatePicker(chosenDates)}
+      {renderDatePicker(chosenDates, handleChosenDates)}
       <Legend regionData={odds}/>
     </div>
   )

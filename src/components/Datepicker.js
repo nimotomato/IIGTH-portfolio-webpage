@@ -1,15 +1,10 @@
 import '../css/Datepicker.css';
-
-
 import { useState, useEffect } from 'react';
 
+
 const Datepicker = ( props ) => {
-    const [startDate, endDate] = Object.values(props.chosenDates).map((date) => date.split("T")[0]);
+    const [startDate, endDate] = props.chosenDates;
 
-    const [chosenStart, setChosenStart] = useState();
-    const [chosenEnd, setChosenEnd] = useState();
-
-    // Somehow move this data back to the fucking App.js
 
     return (
         <div>
@@ -17,13 +12,14 @@ const Datepicker = ( props ) => {
                 <label>
                     Start date:
                     <input 
-                    type="date" 
-                    name="startDate"
-                    defaultValue={startDate} 
-                    min={startDate}
-                    max={endDate}
-                    onChange={(e) => setChosenStart(e.target.value)}
-                />
+                        type="date" 
+                        name="startDate"
+                        defaultValue={startDate} 
+                        //* To do: The min and max value will change on update, they need to be static from page load.
+                        // min={startDate}
+                        // max={endDate}
+                        onChange={(e) => props.onChose([e.target.value, (endDate || null)])}
+                    />
                 </label>
                 <label>
                     End date:
@@ -31,10 +27,10 @@ const Datepicker = ( props ) => {
                         type="date" 
                         name="endDate"
                         defaultValue={endDate} 
-                        min={startDate}
-                        max={endDate} 
-                        onChange={(e) => setChosenEnd(e.target.value)}
-                />
+                        // min={startDate}
+                        // max={endDate} 
+                        onChange={(e) => props.onChose([(startDate || null), e.target.value])}
+                    />
                 </label>
             </form>
         </div>
