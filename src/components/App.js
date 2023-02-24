@@ -10,7 +10,8 @@ import { useForkRef } from '@mui/material';
 
 
 function App() {
-  // TODO: Change odds into probability OR make them interchangeable
+  // TO DO: Change odds into probability OR make them interchangeable
+  // TO DO: Set handleFetchDates and handlequery+fetchnews to HOCs 
 
   // The local endpoint we run the express API on
   const apiUrl = "http://localhost:3000/api/";
