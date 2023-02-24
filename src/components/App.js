@@ -113,14 +113,6 @@ function App() {
   useEffect(() => {handleGetOdds(newsData)}, [newsData])
 
 
-  // Make sure date picker is only loaded after dates have been fetched
-  const renderDatePicker = (chosenDates, handleChosenDates) => {
-    if (chosenDates){
-      return (<Datepicker chosenDates={chosenDates} onChose={handleChosenDates}/>)
-    }
-  }
-
-
   return (
     <div className="content-container">
       <h1 className="main-title">Is it going to hell?</h1>
@@ -128,8 +120,8 @@ function App() {
         <Description />
         <Geomap odds={odds}/>
       </div>
-      
-      {renderDatePicker(chosenDates, handleChosenDates)}
+      {/* Make sure date picker is only loaded after dates have been fetched */}
+      {chosenDates && <Datepicker chosenDates={chosenDates} onChose={handleChosenDates}/>}      
       <Legend regionData={odds}/>
     </div>
   )
