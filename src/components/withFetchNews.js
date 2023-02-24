@@ -20,8 +20,7 @@ async function parseData(queryString) {
     const response = await fetch(`${queryString}`);
     const data = await response.json();
     if (data){
-        const labelCount = Geomath.countLabels(data);
-        return Geomath.getProbability(labelCount);
+        return Geomath.getPercentage(data);
     } 
 
     abortCont.abort();

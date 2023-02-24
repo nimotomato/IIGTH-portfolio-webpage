@@ -1,12 +1,14 @@
 .legend-container{
     display: flex;
     justify-content: center;
+    align-items: center;
+    width: fit-content;
 }
 
 .legend-list{
     display: flex;
     flex-wrap: wrap;
-    width: 280px;
+    width: 23em;
     gap: 2px;
     list-style: none;
 }
@@ -19,4 +21,6 @@
     font-size: 10px;
     font-weight: 600;
     letter-spacing: 1px;
+    width: 14em;
+    height: fit-content;
 }

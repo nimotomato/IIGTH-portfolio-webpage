@@ -4,8 +4,15 @@
     align-items: center;
     width: 300px;
     padding: 30px;
+    margin-bottom: -1.5em;
+}
+
+.intro-title{
+    font-family: 'Creepster', cursive;
 }
 
 .desc-text{
     text-align: justify;
+    font-size: 0.9em;
+    color: aliceblue;
 }

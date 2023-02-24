@@ -8,5 +8,31 @@
     display: grid;
     grid-template-columns: 140px 140px;
     width: fit-content;
+    color:aliceblue;
+
 }
 
+.datepicker-input-title-start{
+    text-transform: lowercase;
+    margin: 0;
+    padding: 0;
+    text-align: left;
+}
+
+.datepicker-input-title-end{
+    text-transform: lowercase;
+    margin: 0;
+    padding: 0;
+    text-align: right;
+}
+
+.datepicker-input{
+    background-color: darkslategray;
+    color:aliceblue;
+    border: none;
+    border-radius: 6px;
+    text-align: center;
+    font-family: Montserrat;
+    margin-bottom: 2em;
+    margin-top: 1em;
+}

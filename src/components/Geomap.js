@@ -29,16 +29,16 @@ const Geomap = ( {odds} ) => {
       <ComposableMap 
         projectionConfig={{
           rotate: [-10, 0, 0],
-          scale: 120,
+          scale: 100,
         }}
-        width={800}
-        height={400}
-        projection="geoEqualEarth" //geoAzimuthalEqualArea
+        width={600}
+        height={300}
+        projection="geoEqualEarth" //geoAzimuthalEqualAreageoEqualEarth
       >
       <Sphere 
         id="1" 
-        stroke="darkslategrey" 
-        strokeWidth={0.5}
+        stroke="aliceblue" 
+        strokeWidth={1.5}
         />
       <Geographies 
         geography={topoUrl}>

@@ -114,8 +114,8 @@ function App() {
   return (
     <div className="content-container">
       <h1 className="main-title">Is it going to hell?</h1>
+      <Description />
       <div className="map-container">
-        <Description />
         <Geomap odds={odds}/>
       </div>
       {/* Make sure date picker is only loaded after dates have been fetched */}

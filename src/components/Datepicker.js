@@ -11,9 +11,10 @@ const Datepicker = ( props ) => {
             <div className='datepicker-container'>
                 <form className="datepicker">
                     <label>
-                        Start date:
+                        <p className="datepicker-input-title-start">Start date</p>
                         <input 
                             type="date" 
+                            className="datepicker-input"
                             name="startDate"
                             defaultValue={startDate} 
                             //* To do: The min and max value will change on update, they need to be static from page load.
@@ -25,9 +26,10 @@ const Datepicker = ( props ) => {
                 </form>
                 <form className="datepicker">
                     <label>
-                        End date:
+                        <p className="datepicker-input-title-end">End date</p>
                         <input 
                             type="date" 
+                            className="datepicker-input"
                             name="endDate"
                             defaultValue={endDate} 
                             // min={startDate}
