@@ -6,6 +6,7 @@ import Description from './Description';
 
 import { useState, useEffect, useMemo } from "react";
 import { Geomath } from './Geomath';
+import withFetchNews from './withFetchNews';
 import { useForkRef } from '@mui/material';
 
 
@@ -101,10 +102,7 @@ function App() {
   // Calculate odds based on the query data
   const handleGetOdds = (newsData) => {
     if (newsData){
-      const labelCount = Geomath.countLabels(newsData);
-      console.log(labelCount)
-      const regionRatios = Geomath.getProbability(labelCount);
-      setOdds(regionRatios);
+      setOdds(Geomath.getPercentage(newsData));
     } 
   }
 

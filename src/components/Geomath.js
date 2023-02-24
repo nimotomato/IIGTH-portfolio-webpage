@@ -38,7 +38,8 @@ export class Geomath {
     }
 
     // Return odds for news to be negative for labels grouped by regions
-    static getOdds = (labelCounts) => {
+    static getOdds = (regionLabels) => {
+        const labelCounts = Geomath.countLabels(regionLabels);
         return labelCounts.map((region) => {
             // Count labels
             let pos = 0;
@@ -68,7 +69,8 @@ export class Geomath {
     } 
 
     // Calculate probability for labels grouped by regions
-    static getProbability = (labelCounts) => {
+    static getPercentage = (regionLabels) => {
+        const labelCounts = Geomath.countLabels(regionLabels);
         return labelCounts.map((region) => {
             // Count labels
             let pos = 0;
