@@ -6,11 +6,6 @@ import {
   Sphere,
 } from "react-simple-maps";
 
-
-import Legend from './Legend';
-
-
-// Get topoJSONdata from local folder.
 import topoUrl from '../data/continents.json';
 
 
@@ -25,7 +20,7 @@ const Geomap = ( {odds} ) => {
   };      
 
   // Set color scale for displaying odds
-  const colorScale = scaleLinear([0, 1], ["white", "coral"]);
+  const colorScale = scaleLinear([0, 1], ["coral", "antiquewhite"]);
 
 
   return (
@@ -60,7 +55,6 @@ const Geomap = ( {odds} ) => {
         }
       </Geographies>
     </ComposableMap>
-    <Legend regionData={odds}/>
   </div>
   )
 }

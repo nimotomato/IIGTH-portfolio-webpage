@@ -21,7 +21,7 @@ const Legend = (regionData) => {
     }
 
     // Set color scale for background color.
-    const colorScale = scaleLinear([0, 1], ["white", "coral"]);
+    const colorScale = scaleLinear([0, 1], ["coral", "antiquewhite"]);
 
 
     const [listItems, setListItems] = useState([])
@@ -46,7 +46,7 @@ const Legend = (regionData) => {
     
     return (
         <div className="legend-container">
-           <ul className="legend-list">
+           <ul className="legend-list">              
                 {listItems}
            </ul>
         </div>
