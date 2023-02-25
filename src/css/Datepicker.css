@@ -68,7 +68,17 @@
 }
 
 @media only screen and (min-width: 1025px) {
+    .datepicker-input{
+        font-size: 0.8em;
+    }
 
+    .datepicker-input-title-start{
+        font-size: 0.8em;
+    }
+    
+    .datepicker-input-title-end{
+        font-size: 0.8em;
+    }
 }
 
 @media only screen and (min-width: 1280px) {

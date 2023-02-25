@@ -8,7 +8,6 @@ import Description from './Description';
 
 
 import { useState, useEffect } from "react";
-import { Geomath } from '../helpers/Geomath';
 import fetchData from '../helpers/fetchData';
 
 
@@ -17,17 +16,23 @@ function App() {
   const apiUrl = "http://localhost:3000/api/";
 
 
+  // Theme for map and legend
   const scaleColors = {
-    scale: [0.2, 0.7],
+    scale: [0.2, 0.6],
     colors: ["linen", "coral"]
   };
   
 
-  // This is states for the dates used in API search query
+  // States for the dates used in API search query
   const [chosenDates, setChosenDates] = useState();
 
-  // These are dates for min/max legend values
+
+  // State for dates used in min/max legend values
   const [minMaxDates, setMinMaxDates] = useState();
+
+
+  // State for news data
+  const [data, setData] = useState({});
 
 
   // Get date min/max range
@@ -45,19 +50,9 @@ function App() {
     }
   }
 
-  // Run the fetch on component load
+  // Fetch date range on component load
   useEffect(() => {
     handleFetchDates()}, []);
-
-
-  // Handle chosen dates, used in datepicker component
-  const handleChosenDates = (dates) => {
-    setChosenDates(dates);
-  } 
-
-
-  // State for news data
-  const [data, setData] = useState({});
 
   
   // Fetch new data on updated dates
@@ -74,16 +69,29 @@ function App() {
     }, [chosenDates]);
 
 
+  // Handle chosen dates, used in DATEPICKER component
+  const handleChosenDates = (dates) => {
+    setChosenDates(dates);
+  } 
+
+
   return (
     <div className="content-container">
       <h1 className="main-title">Is it going to hell?</h1>
       <Description />
       <div className="map-container">
-        <Geomap data={data} theme={scaleColors}/>
+        <Geomap 
+          data={data} 
+          theme={scaleColors}/>
       </div>
       {/* Make sure date picker is only loaded after dates have been fetched */}
-      {chosenDates && <Datepicker chosenDates={chosenDates} onChose={handleChosenDates} minMaxDates={minMaxDates}/>}      
-      <Legend data={data} theme={scaleColors}/>
+      {chosenDates && <Datepicker 
+        chosenDates={chosenDates} 
+        onChose={handleChosenDates} 
+        minMaxDates={minMaxDates}/>}      
+      <Legend 
+        data={data} 
+        theme={scaleColors}/>
     </div>
   );
 }
