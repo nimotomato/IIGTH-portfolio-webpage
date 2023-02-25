@@ -1,6 +1,6 @@
 body{
     font-family: 'Montserrat', sans-serif;
-    background-color: rgb(21, 29, 29);
+    background-color: rgb(28, 39, 39);
 }
 
 .content-container{
@@ -20,7 +20,7 @@ body{
     margin-top: -.05em;
     text-transform: uppercase;
     font-family: 'Creepster', cursive;
-    color:aliceblue;
+    color:rgb(223, 53, 53);
 }
 
 .map-container{
