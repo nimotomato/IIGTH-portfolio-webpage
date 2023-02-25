@@ -52,7 +52,18 @@ const Geomap = ( {data, theme} ) => {
               geography={geo}
               fill={geo.properties.data ? colorScale(geo.properties.data) : "#F5F4F6"}
               stroke="darkslategrey"
-              strokeWidth={0.1}
+              strokeWidth={0.2}
+              style={{
+                default: {
+                    outline: 'none'
+                },
+                hover: {
+                    outline: 'none'
+                },
+                pressed: {
+                    outline: 'none'
+                }
+            }}
               />
             ))
           }
