@@ -5,24 +5,25 @@ export class Geomath {
         // Map to count labels by region
         const regions = new Map();    
         
+
         regionLabels.forEach(item => {
             // Must be string as objects are not unique.
             const key = `${item.region}-${item.label}`;
-
             regions.set(key, (regions.get(key) || 0) + 1);
         });
+
 
         // Array of regions. Key is region name, value is list of dicts for label and count.
         const arrayScore = Array.from(regions, ([key, count]) => { 
             const [region, label] = key.split('-');
-            const labelCount = [{label: label, count: count}]
-            const scores  = { region: region, labelCount: labelCount }
-
-            return scores
+            const labelCount = [{label: label, count: count}];
+            const scores  = { region: region, labelCount: labelCount };
+            return scores;
         })
 
         // Set new map to group by region
-        const labelCount = new Map()
+        const labelCount = new Map();
+
 
         arrayScore.forEach(item => {
             // Get the region names
@@ -30,12 +31,14 @@ export class Geomath {
             // Get the [label: count]
             const newValue = Object.values(item)[1];
             const oldValue = labelCount.get(regionKey) || [];
-            labelCount.set(regionKey, [...newValue, ...oldValue])
+            labelCount.set(regionKey, [...newValue, ...oldValue]);
         })
 
+
         // Make array of arrays into a nice array of dicts
-        return Array.from(labelCount, ([region, counts]) => ({region, counts}))
+        return Array.from(labelCount, ([region, counts]) => ({region, counts}));
     }
+
 
     // Return odds for news to be negative for labels grouped by regions
     static getOdds = (regionLabels) => {
@@ -46,6 +49,7 @@ export class Geomath {
             let neg = 0;
             let neu = 0;
 
+
             // Checks each count, adds pos and neutral values
             Object.values(region.counts).forEach((labelCount) => {
                 if(labelCount.label === 'POS'){
@@ -57,16 +61,20 @@ export class Geomath {
                 }
             });
 
+
             // Check for null data
             if (!pos || !neg || !neu ){
-                return {region: region.region, ratio: undefined}
+                return {region: region.region, ratio: undefined};
             }
 
-            let odds = neg / (pos + neu)
 
-            return {region: region.region, data: odds}
+            let odds = neg / (pos + neu);
+
+
+            return {region: region.region, data: odds};
         })
     } 
+
 
     // Calculate probability for labels grouped by regions
     static getPercentage = (regionLabels) => {
@@ -77,6 +85,7 @@ export class Geomath {
             let neg = 0;
             let neu = 0;
 
+
             // Checks each count, adds pos and neutral values
             Object.values(region.counts).forEach((labelCount) => {
                 if(labelCount.label === 'POS'){
@@ -88,14 +97,17 @@ export class Geomath {
                 }
             });
 
+
             // Check for null data
             if (!pos || !neg || !neu ){
-                return {region: region.region, ratio: undefined}
+                return {region: region.region, ratio: undefined};
             }
 
-            let probability = neg / (pos + neu + neg)
 
-            return {region: region.region, data: probability}
+            let probability = neg / (pos + neu + neg);
+
+
+            return {region: region.region, data: probability};
         })
     } 
 }

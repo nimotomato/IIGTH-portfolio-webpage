@@ -9,6 +9,7 @@ body{
     align-items: center;
     flex-direction: column;
     min-height: 100vh;
+    min-width: 100vw;
 }
 
 .main-title{
@@ -23,7 +24,33 @@ body{
 }
 
 .map-container{
-    display: grid;
     width: 23em;
 }
 
+@media only screen and (min-width: 550px) {
+    .main-title{
+        font-size: 4.5em;
+    }
+
+    .map-container{
+        width: 38em;
+    }
+}
+
+@media only screen and (min-width: 800px) {
+    .main-title{
+        font-size: 6em;
+    }
+
+    .map-container{
+        width: 50em;
+    }
+}
+
+@media only screen and (min-width: 1025px) {
+
+}
+
+@media only screen and (min-width: 1280px) {
+
+}

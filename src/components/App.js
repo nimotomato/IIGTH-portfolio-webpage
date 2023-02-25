@@ -8,12 +8,11 @@ import Description from './Description';
 
 
 import { useState, useEffect } from "react";
-import { Geomath } from './Geomath';
-import withFetchNews from './withFetchNews';
+import { Geomath } from '../helpers/Geomath';
+import fetchData from '../helpers/fetchData';
 
 
 function App() {
-  // TO DO: Set handleFetchDates and handlequery+fetchnews to HOCs 
   // The local endpoint we run the express API on
   const apiUrl = "http://localhost:3000/api/";
 
@@ -48,7 +47,7 @@ function App() {
 
   // Run the fetch on component load
   useEffect(() => {
-    handleFetchDates()}, [])
+    handleFetchDates()}, []);
 
 
   // Handle chosen dates, used in datepicker component
@@ -57,68 +56,22 @@ function App() {
   } 
 
 
-  // State for the query strings to fetch news data from API
-  const [queryString, setQueryString] = useState()
-
-
-  // Set query string
-  const handleQueryString = (chosenDates) => {
-    if (chosenDates && chosenDates[0] && chosenDates[1]){
-      const dateQuery = new URLSearchParams({startDate: chosenDates[0], endDate: chosenDates[1]});
-      const searchQuery = (`${apiUrl}news?${dateQuery}`);
-      setQueryString(searchQuery);
-    }
-  }
-
-
-  // Updates querystring every time the chosen dates change
-  useEffect(() => {
-    handleQueryString(chosenDates);
-  }, [chosenDates]);
-
-
-  // Fetch query data from API 
-  async function handleFetchNews(queryString) {
-    const abortCont = new AbortController();
-    if (queryString){
-      try{
-        const response = await fetch(`${queryString}`, {signal: abortCont.signal});
-        return response.json();
-      } catch (e) {
-        console.log(e)
-      }
-    }
-    abortCont.abort();
-    console.log(abortCont.signal)
-    }
-  
-
-  // State for our news data
-  const [newsData, setNewsData] = useState();
-  
-
-  // Updates news every time queryString changes
-  useEffect(() => {
-    handleFetchNews(queryString).then((data) => {
-      setNewsData(data);
-    })
-  }, [queryString])
-
-
-  // State for news odds
+  // State for news data
   const [data, setData] = useState({});
 
-
-  // Calculate data based on the query data
-  const handleGetData = (newsData) => {
-    if (newsData){
-      setData(Geomath.getPercentage(newsData));
-    } 
-  }
-
-
-  // Update odds on new newsData
-  useEffect(() => {handleGetData(newsData)}, [newsData])
+  
+  // Fetch new data on updated dates
+  useEffect(() => {
+    fetchData(apiUrl, chosenDates)
+      .then(result => {
+        if(result){
+          setData(result);
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
+    }, [chosenDates]);
 
 
   return (
@@ -132,7 +85,7 @@ function App() {
       {chosenDates && <Datepicker chosenDates={chosenDates} onChose={handleChosenDates} minMaxDates={minMaxDates}/>}      
       <Legend data={data} theme={scaleColors}/>
     </div>
-  )
+  );
 }
 
 

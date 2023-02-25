@@ -6,7 +6,7 @@
 
 .datepicker-container{
     display: grid;
-    grid-template-columns: 140px 140px;
+    grid-template-columns: 10em 10em;
     width: fit-content;
     color:aliceblue;
     margin-bottom: 0px;
@@ -47,4 +47,30 @@
 .datepicker-r {
     display:flex;
     justify-content: right;
+}
+
+@media only screen and (min-width: 550px) {
+
+}
+
+@media only screen and (min-width: 800px) {
+    .datepicker-input{
+        font-size: 1.1em;
+    }
+
+    .datepicker-input-title-start{
+        font-size: 1.1em;
+    }
+    
+    .datepicker-input-title-end{
+        font-size: 1.1em;
+    }
+}
+
+@media only screen and (min-width: 1025px) {
+
+}
+
+@media only screen and (min-width: 1280px) {
+
 }
