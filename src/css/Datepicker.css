@@ -9,7 +9,8 @@
     grid-template-columns: 140px 140px;
     width: fit-content;
     color:aliceblue;
-
+    margin-bottom: 0px;
+    margin-top: 0.5em;
 }
 
 .datepicker-input-title-start{
@@ -33,6 +34,17 @@
     border-radius: 6px;
     text-align: center;
     font-family: Montserrat;
-    margin-bottom: 2em;
+    margin-bottom: 1.2em;
     margin-top: 1em;
+    outline: none;
+}
+
+.datepicker-l {
+    display:flex;
+    justify-content: left;
+}
+
+.datepicker-r {
+    display:flex;
+    justify-content: right;
 }

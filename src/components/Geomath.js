@@ -64,7 +64,7 @@ export class Geomath {
 
             let odds = neg / (pos + neu)
 
-            return {region: region.region, odds: odds}
+            return {region: region.region, data: odds}
         })
     } 
 
@@ -95,7 +95,7 @@ export class Geomath {
 
             let probability = neg / (pos + neu + neg)
 
-            return {region: region.region, odds: probability}
+            return {region: region.region, data: probability}
         })
     } 
 }

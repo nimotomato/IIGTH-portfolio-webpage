@@ -1,25 +1,34 @@
 import '../css/App.css';
+
+
 import Geomap from './Geomap';
 import Datepicker from './Datepicker';
 import Legend from './Legend';
 import Description from './Description';
 
-import { useState, useEffect, useMemo } from "react";
+
+import { useState, useEffect } from "react";
 import { Geomath } from './Geomath';
 import withFetchNews from './withFetchNews';
-import { useForkRef } from '@mui/material';
 
 
 function App() {
-  // TO DO: Change odds into probability OR make them interchangeable
   // TO DO: Set handleFetchDates and handlequery+fetchnews to HOCs 
-
   // The local endpoint we run the express API on
   const apiUrl = "http://localhost:3000/api/";
 
 
+  const scaleColors = {
+    scale: [0.2, 0.7],
+    colors: ["linen", "coral"]
+  };
+  
+
   // This is states for the dates used in API search query
   const [chosenDates, setChosenDates] = useState();
+
+  // These are dates for min/max legend values
+  const [minMaxDates, setMinMaxDates] = useState();
 
 
   // Get date min/max range
@@ -28,9 +37,10 @@ function App() {
       const response = await fetch(`${apiUrl}dates`);
       const data = await response.json();
       // Create the default days (min, max) for the query string
-      const startdate = data[0].startDate.split("T")[0]
-      const endDate = data[0].endDate.split("T")[0]
-      setChosenDates([startdate, endDate])
+      const startDate = data[0].startDate.split("T")[0];
+      const endDate = data[0].endDate.split("T")[0];
+      setChosenDates([startDate, endDate]);
+      setMinMaxDates({startDate: startDate, endDate: endDate});
     } catch (e) {
       console.log(e);
     }
@@ -96,19 +106,19 @@ function App() {
 
 
   // State for news odds
-  const [odds, setOdds] = useState({});
+  const [data, setData] = useState({});
 
 
-  // Calculate odds based on the query data
-  const handleGetOdds = (newsData) => {
+  // Calculate data based on the query data
+  const handleGetData = (newsData) => {
     if (newsData){
-      setOdds(Geomath.getPercentage(newsData));
+      setData(Geomath.getPercentage(newsData));
     } 
   }
 
 
   // Update odds on new newsData
-  useEffect(() => {handleGetOdds(newsData)}, [newsData])
+  useEffect(() => {handleGetData(newsData)}, [newsData])
 
 
   return (
@@ -116,11 +126,11 @@ function App() {
       <h1 className="main-title">Is it going to hell?</h1>
       <Description />
       <div className="map-container">
-        <Geomap odds={odds}/>
+        <Geomap data={data} theme={scaleColors}/>
       </div>
       {/* Make sure date picker is only loaded after dates have been fetched */}
-      {chosenDates && <Datepicker chosenDates={chosenDates} onChose={handleChosenDates}/>}      
-      <Legend regionData={odds}/>
+      {chosenDates && <Datepicker chosenDates={chosenDates} onChose={handleChosenDates} minMaxDates={minMaxDates}/>}      
+      <Legend data={data} theme={scaleColors}/>
     </div>
   )
 }
