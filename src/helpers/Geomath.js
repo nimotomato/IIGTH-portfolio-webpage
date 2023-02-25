@@ -40,42 +40,6 @@ export class Geomath {
     }
 
 
-    // Return odds for news to be negative for labels grouped by regions
-    static getOdds = (regionLabels) => {
-        const labelCounts = Geomath.countLabels(regionLabels);
-        return labelCounts.map((region) => {
-            // Count labels
-            let pos = 0;
-            let neg = 0;
-            let neu = 0;
-
-
-            // Checks each count, adds pos and neutral values
-            Object.values(region.counts).forEach((labelCount) => {
-                if(labelCount.label === 'POS'){
-                pos += labelCount.count;
-                } else if (labelCount.label === 'NEG'){
-                neg += labelCount.count;
-                } else if (labelCount.label === 'NEU'){
-                neu += labelCount.count;
-                }
-            });
-
-
-            // Check for null data
-            if (!pos || !neg || !neu ){
-                return {region: region.region, ratio: undefined};
-            }
-
-
-            let odds = neg / (pos + neu);
-
-
-            return {region: region.region, data: odds};
-        })
-    } 
-
-
     // Calculate probability for labels grouped by regions
     static getPercentage = (regionLabels) => {
         const labelCounts = Geomath.countLabels(regionLabels);

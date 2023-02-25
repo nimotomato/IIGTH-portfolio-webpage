@@ -5,7 +5,6 @@ import {
   Geography,
   Sphere,
 } from "react-simple-maps";
-import { useContext } from "react";
 
 
 import topoUrl from '../data/continents.json';
