@@ -1,7 +1,5 @@
 import { Geomath } from './Geomath';
 
-// TO DO: 
-// GET THIS WORKING
 // Set query string
 const getQueryString = (apiUrl, chosenDates) => {
     if (chosenDates && chosenDates[0] && chosenDates[1]){
@@ -15,23 +13,34 @@ const getQueryString = (apiUrl, chosenDates) => {
 
 // Calculate results (odds or percentage) based on the query data
 async function parseData(queryString) {
-    const abortCont = new AbortController();
-
     const response = await fetch(`${queryString}`);
-    const data = await response.json();
-    if (data){
-        const labelCount = Geomath.countLabels(data);
-        return Geomath.getProbability(labelCount);
-    } 
 
-    abortCont.abort();
-    console.log(abortCont.signal)
+
+    const data = await response.json();
+
+
+    if (data){
+        return Geomath.getPercentage(data);
+    } 
 }
 
+
+// Active function
 const withFetchNews = async (apiUrl, chosenDates) => {
     const queryString = getQueryString(apiUrl, chosenDates)
 
-    const regionResults = await parseData(queryString);
+
+    if (!queryString){
+        return null
+    }
+
+
+    const regionResults = await parseData(queryString)
+        .catch(error => {
+            console.log(error.message);
+        });
+
+
     return regionResults;
 }
  

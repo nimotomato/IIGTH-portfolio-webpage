@@ -2,37 +2,38 @@ import '../css/Datepicker.css';
 import { useState, useEffect } from 'react';
 
 
-const Datepicker = ( props ) => {
-    const [startDate, endDate] = props.chosenDates;
+const Datepicker = ( {chosenDates, onChose, minMaxDates} ) => {
+    const [startDate, endDate] = chosenDates;
 
 
     return (
         <div className="datepicker-wrapper">
             <div className='datepicker-container'>
-                <form className="datepicker">
+                <form className="datepicker-l">
                     <label>
-                        Start date:
+                        <p className="datepicker-input-title-start">Start date</p>
                         <input 
                             type="date" 
+                            className="datepicker-input"
                             name="startDate"
                             defaultValue={startDate} 
-                            //* To do: The min and max value will change on update, they need to be static from page load.
-                            // min={startDate}
-                            // max={endDate}
-                            onChange={(e) => props.onChose([e.target.value, (endDate || null)])}
+                            min={minMaxDates.startDate}
+                            max={minMaxDates.endDate}
+                            onChange={(e) => onChose([e.target.value, (endDate || null)])}
                         />
                     </label>
                 </form>
-                <form className="datepicker">
+                <form className="datepicker-r">
                     <label>
-                        End date:
+                        <p className="datepicker-input-title-end">End date</p>
                         <input 
                             type="date" 
+                            className="datepicker-input"
                             name="endDate"
                             defaultValue={endDate} 
-                            // min={startDate}
-                            // max={endDate} 
-                            onChange={(e) => props.onChose([(startDate || null), e.target.value])}
+                            min={minMaxDates.startDate}
+                            max={minMaxDates.endDate}
+                            onChange={(e) => onChose([(startDate || null), e.target.value])}
                         />
                     </label>
                 </form>

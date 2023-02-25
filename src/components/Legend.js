@@ -3,9 +3,13 @@ import { useState, useEffect } from "react";
 import { scaleLinear } from "d3-scale";
 
 
-const Legend = (regionData) => {
+const Legend = ( { data, theme }) => {
+    // Set color scale for background color.
+    const colorScale = scaleLinear(theme.scale, theme.colors);
+
+
     //Sort regionData alphabetically
-    const sortedData = Object.entries(regionData.regionData).sort((a, b) =>{
+    const sortedData = Object.entries(data).sort((a, b) =>{
         if (a[1].region < b[1].region){
             return -1;
         }
@@ -20,28 +24,25 @@ const Legend = (regionData) => {
         return Number(Math.round(value + 'e' + decimals) + 'e-' + decimals);
     }
 
-    // Set color scale for background color.
-    const colorScale = scaleLinear([0.2, 0.7], ["antiquewhite", "coral"]);
-
 
     const [listItems, setListItems] = useState([])
 
 
-    //Unordered list with list items for each region and odds
+    //Unordered list with list items for each region and data
     const handleListItems = (sortedData) => {
         const listItems = sortedData.map((item) => {
             return <li
                 className="legend-list-item" 
-                style={{backgroundColor: colorScale(item.odds)}}
+                style={{backgroundColor: colorScale(item.data)}}
                 key={item.region}>
-                    {item.region}: {round(item.odds, 2)}
+                    {item.region}: {round(item.data, 2)}
                 </li>
         })
         setListItems(listItems)       
     }
     
     // Calls handleList on load and whenever regionData is changed.
-    useEffect(() => {handleListItems(sortedData)}, [regionData])
+    useEffect(() => {handleListItems(sortedData)}, [data])
 
     
     return (

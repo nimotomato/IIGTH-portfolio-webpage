@@ -6,7 +6,81 @@
 
 .datepicker-container{
     display: grid;
-    grid-template-columns: 140px 140px;
+    grid-template-columns: 10em 10em;
     width: fit-content;
+    color:aliceblue;
+    margin-bottom: 0px;
+    margin-top: 0.5em;
 }
 
+.datepicker-input-title-start{
+    text-transform: lowercase;
+    margin: 0;
+    padding: 0;
+    text-align: left;
+}
+
+.datepicker-input-title-end{
+    text-transform: lowercase;
+    margin: 0;
+    padding: 0;
+    text-align: right;
+}
+
+.datepicker-input{
+    background-color: darkslategray;
+    color:aliceblue;
+    border: none;
+    border-radius: 6px;
+    text-align: center;
+    font-family: Montserrat;
+    margin-bottom: 1.2em;
+    margin-top: 1em;
+    outline: none;
+}
+
+.datepicker-l {
+    display:flex;
+    justify-content: left;
+}
+
+.datepicker-r {
+    display:flex;
+    justify-content: right;
+}
+
+@media only screen and (min-width: 550px) {
+
+}
+
+@media only screen and (min-width: 800px) {
+    .datepicker-input{
+        font-size: 1.1em;
+    }
+
+    .datepicker-input-title-start{
+        font-size: 1.1em;
+    }
+    
+    .datepicker-input-title-end{
+        font-size: 1.1em;
+    }
+}
+
+@media only screen and (min-width: 1025px) {
+    .datepicker-input{
+        font-size: 0.8em;
+    }
+
+    .datepicker-input-title-start{
+        font-size: 0.8em;
+    }
+    
+    .datepicker-input-title-end{
+        font-size: 0.8em;
+    }
+}
+
+@media only screen and (min-width: 1280px) {
+
+}

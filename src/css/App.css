@@ -1,20 +1,62 @@
 body{
     font-family: 'Montserrat', sans-serif;
+    background-color: rgb(21, 29, 29);
+}
+
+.content-container{
+    margin: 0.5em;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
 .main-title{
-    font-size: 80px;
+    font-size: 3em;
     text-align: center;
     padding: 0;
-    margin-bottom: 0;
+    margin-bottom: -0.6em;
+    margin-top: -.05em;
     text-transform: uppercase;
     font-family: 'Creepster', cursive;
+    color:aliceblue;
 }
 
 .map-container{
-    display: grid;
-    grid-template-columns: 330px auto;
-    margin: 0px;
-    width: 80vw;
+    width: 23em;
 }
 
+@media only screen and (min-width: 550px) {
+    .main-title{
+        font-size: 4.5em;
+    }
+
+    .map-container{
+        width: 38em;
+    }
+}
+
+@media only screen and (min-width: 800px) {
+    .main-title{
+        font-size: 6em;
+        margin-bottom: -0.2em;
+    }
+
+    .map-container{
+        width: 50em;
+    }
+}
+
+@media only screen and (min-width: 1025px) {
+    .main-title{
+        font-size: 7em;
+    }
+
+    .map-container{
+        width: 48em;
+    }
+}
+
+@media only screen and (min-width: 1280px) {
+
+}

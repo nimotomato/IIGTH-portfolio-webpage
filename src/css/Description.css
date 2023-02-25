@@ -2,10 +2,53 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 300px;
-    padding: 30px;
+    width: 22em;
+    padding: 1.5em;
+    margin-bottom: -1em;
+}
+
+.intro-title{
+    font-family: 'Creepster', cursive;
 }
 
 .desc-text{
     text-align: justify;
+    font-size: 0.9em;
+    color: aliceblue;
+}
+
+@media only screen and (min-width: 550px) {
+    .desc-container {
+        width: 33em;
+        padding: 2em;
+        margin-bottom: -1.5em;
+    }
+
+    .desc-text{
+        text-align: justify;
+        font-size: 1em;
+        color: aliceblue;
+    }
+}
+
+@media only screen and (min-width: 800px) {
+
+}
+
+@media only screen and (min-width: 1025px) {
+    .desc-container {
+        width: 33em;
+        padding: 2em;
+        margin-bottom: -1.5em;
+    }
+
+    .desc-text{
+        text-align: justify;
+        font-size: 1em;
+        color: aliceblue;
+    }
+}
+
+@media only screen and (min-width: 1280px) {
+
 }
