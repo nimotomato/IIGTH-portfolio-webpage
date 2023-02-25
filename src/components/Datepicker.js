@@ -1,5 +1,4 @@
 import '../css/Datepicker.css';
-import { useState, useEffect } from 'react';
 
 
 const Datepicker = ( {chosenDates, onChose, minMaxDates} ) => {

@@ -1,5 +1,5 @@
-import { fontFamily } from '@mui/system';
 import '../css/Description.css';
+
 
 const Description = () => {
     const strongTitle = "Is it going to hell? "
