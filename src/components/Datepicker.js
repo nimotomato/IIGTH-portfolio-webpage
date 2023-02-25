@@ -7,8 +7,8 @@ const Datepicker = ( {chosenDates, onChose, minMaxDates} ) => {
 
 
     return (
-        <div className="datepicker-wrapper">
-            <div className='datepicker-container'>
+        <div className="datepicker-container">
+            <div className='datepicker-wrapper'>
                 <form className="datepicker-l">
                     <label>
                         <p className="datepicker-input-title-start">Start date</p>

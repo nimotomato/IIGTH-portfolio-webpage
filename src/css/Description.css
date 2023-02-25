@@ -2,6 +2,12 @@
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.desc-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 22em;
     padding: 1.5em;
     margin-bottom: -1em;
@@ -17,8 +23,16 @@
     color: aliceblue;
 }
 
+@media only screen and (max-width: 400px) {
+    .desc-wrapper {
+        width: 20em;
+        padding: 1.5em;
+        margin-bottom: -1em;
+    }
+}
+
 @media only screen and (min-width: 550px) {
-    .desc-container {
+    .desc-wrapper {
         width: 33em;
         padding: 2em;
         margin-bottom: -1.5em;
@@ -36,7 +50,7 @@
 }
 
 @media only screen and (min-width: 1025px) {
-    .desc-container {
+    .desc-wrapper {
         width: 33em;
         padding: 2em;
         margin-bottom: -1.5em;

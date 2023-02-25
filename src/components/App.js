@@ -79,19 +79,19 @@ function App() {
     <div className="content-container">
       <h1 className="main-title">Is it going to hell?</h1>
       <Description />
-      <div className="map-container">
         <Geomap 
           data={data} 
           theme={scaleColors}/>
-      </div>
       {/* Make sure date picker is only loaded after dates have been fetched */}
-      {chosenDates && <Datepicker 
-        chosenDates={chosenDates} 
-        onChose={handleChosenDates} 
-        minMaxDates={minMaxDates}/>}      
-      <Legend 
-        data={data} 
-        theme={scaleColors}/>
+      <div className="date-legend-container">
+        {chosenDates && <Datepicker 
+          chosenDates={chosenDates} 
+          onChose={handleChosenDates} 
+          minMaxDates={minMaxDates}/>}      
+        <Legend 
+          data={data} 
+          theme={scaleColors}/>
+        </div>
     </div>
   );
 }

@@ -28,38 +28,38 @@ const Geomap = ( {data, theme} ) => {
 
 
   return (
-    <div>
-      <ComposableMap 
-        projectionConfig={{
-          rotate: [-10, 0, 0],
-          scale: 100,
-        }}
-        width={600}
-        height={300}
-        projection="geoEqualEarth" //geoAzimuthalEqualAreageoEqualEarth
-      >
-      <Sphere 
-        id="1" 
-        stroke="aliceblue" 
-        strokeWidth={1.5}
-        />
-      <Geographies 
-        geography={topoUrl}>
-        {({ geographies }) =>
-          geographies.map((geo) => (
-          <Geography 
-            key={geo.rsmKey} 
-            geography={geo}
-            fill={geo.properties.data ? colorScale(geo.properties.data) : "#F5F4F6"}
-            stroke="darkslategrey"
-            strokeWidth={0.1}
-             />
-          ))
-        }
-      </Geographies>
-    </ComposableMap>
-  </div>
-  )
+    <div className="map-container">
+        <ComposableMap 
+          projectionConfig={{
+            rotate: [-10, 0, 0],
+            scale: 100,
+          }}
+          width={600}
+          height={300}
+          projection="geoEqualEarth" //geoAzimuthalEqualAreageoEqualEarth
+        >
+        <Sphere 
+          id="1" 
+          stroke="aliceblue" 
+          strokeWidth={1.5}
+          />
+        <Geographies 
+          geography={topoUrl}>
+          {({ geographies }) =>
+            geographies.map((geo) => (
+            <Geography 
+              key={geo.rsmKey} 
+              geography={geo}
+              fill={geo.properties.data ? colorScale(geo.properties.data) : "#F5F4F6"}
+              stroke="darkslategrey"
+              strokeWidth={0.1}
+              />
+            ))
+          }
+        </Geographies>
+        </ComposableMap>
+    </div>
+  );
 }
  
 

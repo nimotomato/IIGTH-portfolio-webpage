@@ -47,9 +47,11 @@ const Legend = ( { data, theme }) => {
     
     return (
         <div className="legend-container">
-           <ul className="legend-list">              
-                {listItems}
-           </ul>
+            <div className="legend-wrapper">
+                <ul className="legend-list">              
+                    {listItems}
+                </ul>
+            </div>
         </div>
     );
 }
