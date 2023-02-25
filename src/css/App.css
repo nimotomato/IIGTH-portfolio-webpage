@@ -6,9 +6,10 @@ body{
 .content-container{
     margin: 0.5em;
     display: flex;
-    align-items: center;
     flex-direction: column;
-    min-height: 100vh;
+    justify-content: space-around;
+    align-items: center;
+    min-height: 98vh;
 }
 
 .main-title{
@@ -24,6 +25,16 @@ body{
 
 .map-container{
     width: 23em;
+}
+
+@media only screen and (max-width: 400px) {
+    .main-title{
+        font-size: 3em;
+    }
+
+    .map-container{
+        width: 20em;
+    }
 }
 
 @media only screen and (min-width: 550px) {

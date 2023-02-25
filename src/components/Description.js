@@ -11,11 +11,13 @@ const Description = () => {
 
     return (
         <div className="desc-container">
-            <p className="desc-text">
-                <span className="intro-title">{strongTitle}</span>{infoText}
-            </p>
+            <div className="desc-wrapper">
+                <p className="desc-text">
+                    <span className="intro-title">{strongTitle}</span>{infoText}
+                </p>
+            </div>
         </div>
-      );
+    );
 }
  
 export default Description;

@@ -2,6 +2,9 @@
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.legend-wrapper{
     width: fit-content;
 }
 
@@ -23,6 +26,10 @@
     letter-spacing: 1px;
     width: 14em;
     height: fit-content;
+}
+
+@media only screen and (max-width: 400px) {
+
 }
 
 @media only screen and (min-width: 550px) {

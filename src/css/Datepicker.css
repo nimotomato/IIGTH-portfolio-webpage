@@ -1,10 +1,10 @@
-.datepicker-wrapper{
+.datepicker-container{
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.datepicker-container{
+.datepicker-wrapper{
     display: grid;
     grid-template-columns: 10em 10em;
     width: fit-content;
@@ -47,6 +47,10 @@
 .datepicker-r {
     display:flex;
     justify-content: right;
+}
+
+@media only screen and (max-width: 400px) {
+
 }
 
 @media only screen and (min-width: 550px) {
