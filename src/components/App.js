@@ -13,7 +13,7 @@ import fetchData from '../helpers/fetchData';
 
 function App() {
   // The local endpoint we run the express API on
-  const apiUrl = "http://localhost:3000/api/";
+  const apiUrl = "http://13.50.13.8:3000/api/";
 
 
   // Theme for map and legend
