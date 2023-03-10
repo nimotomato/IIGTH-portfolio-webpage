@@ -13,7 +13,7 @@ import fetchData from '../helpers/fetchData';
 
 function App() {
   // The local endpoint we run the express API on
-  const apiUrl = "https://iith-api-service-nimotomato.onrender.com/api/";
+  const apiUrl = "https://73hflv8mr2.execute-api.eu-north-1.amazonaws.com/default/api";
 
 
   // Theme for map and legend
