@@ -4,8 +4,6 @@ import { useState, useEffect } from "react";
 const Monthpicker = ({ chosenDates, onChose, minMaxDates }) => {
   const [startDate, endDate] = chosenDates;
 
-  console.log(minMaxDates);
-
   const [startMonth, setStartMonth] = useState(startDate.slice(0, 7));
 
   const [endMonth, setEndMonth] = useState(endDate.slice(0, 7));

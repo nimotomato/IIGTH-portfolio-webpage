@@ -38,7 +38,7 @@ const Legend = ({ data, theme }) => {
           style={{ backgroundColor: colorScale(item[1]) }}
           key={item[0]}
         >
-          {item[0]}: {round(item[1], 2)}
+          {item[0]}: {round(item[1], 2) * 100 + "%"}
         </li>
       );
     });
