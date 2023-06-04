@@ -12,7 +12,8 @@ import { Geomath } from "../helpers/Geomath";
 
 function App() {
   // Connect to api endpoint
-  const apiUrl = "https://express-pg-api.vercel.app/api/";
+  const apiUrl =
+    "https://iigth-portfolio-api-git-main-nimotomato.vercel.app/api/";
 
   // Endpoints
   const negCount = "negCount";
