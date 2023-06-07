@@ -10,11 +10,10 @@ import Settings from "./Settings";
 import { useState, useEffect, useRef } from "react";
 import fetchData from "../helpers/fetchData";
 import { Geomath } from "../helpers/Geomath";
-import { colors } from "@mui/material";
 
 function App() {
-  // Connect to api endpoint
-  const apiUrl = "https://express-pg-api.vercel.app/api/";
+  // Connect to api
+  const apiUrl = "https://iigth-portfolio-api.vercel.app/api/";
 
   // Endpoints
   const negCount = "negCount";
@@ -24,7 +23,7 @@ function App() {
   // Theme for map and legend
   const colorScales = {
     scaleCurrent: {
-      scale: [0.2, 0.6],
+      scale: [0.2, 0.5],
       colors: ["linen", "coral"],
     },
     scaleTotal: {

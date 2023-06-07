@@ -2,10 +2,6 @@ import "../css/Legend.css";
 import { useState, useEffect } from "react";
 import { scaleLinear } from "d3-scale";
 
-function round(value, decimals) {
-  return Number(Math.round(value + "e" + decimals) + "e-" + decimals);
-}
-
 const Legend = ({ data, theme }) => {
   // Set color scale for background color.
   const colorScale = scaleLinear(theme.scale, theme.colors);
@@ -38,7 +34,9 @@ const Legend = ({ data, theme }) => {
           style={{ backgroundColor: colorScale(item[1]) }}
           key={item[0]}
         >
-          {item[0]}: {round(item[1], 2) * 100 + "%"}
+          {item[0]}:
+          <br />
+          {(item[1] * 100).toFixed(2) + "%"}
         </li>
       );
     });
