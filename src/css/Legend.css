@@ -1,14 +1,14 @@
-.legend-container{
+.legend-container {
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.legend-wrapper{
+.legend-wrapper {
     width: fit-content;
 }
 
-.legend-list{
+.legend-list {
     display: flex;
     flex-wrap: wrap;
     width: 23em;
@@ -16,7 +16,7 @@
     list-style: none;
 }
 
-.legend-list-item{
+.legend-list-item {
     border-radius: 5px;
     text-align: center;
     padding: 10px;
@@ -28,22 +28,12 @@
     height: fit-content;
 }
 
-@media only screen and (max-width: 400px) {
+@media only screen and (max-width: 400px) {}
 
-}
+@media only screen and (min-width: 550px) {}
 
-@media only screen and (min-width: 550px) {
+@media only screen and (min-width: 800px) {}
 
-}
+@media only screen and (min-width: 1025px) {}
 
-@media only screen and (min-width: 800px) {
-
-}
-
-@media only screen and (min-width: 1025px) {
-
-}
-
-@media only screen and (min-width: 1280px) {
-
-}
+@media only screen and (min-width: 1280px) {}

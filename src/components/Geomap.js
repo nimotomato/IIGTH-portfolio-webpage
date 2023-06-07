@@ -34,7 +34,7 @@ const Geomap = ({ data, theme }) => {
         height={300}
         projection="geoEqualEarth" //geoAzimuthalEqualAreageoEqualEarth
       >
-        <Sphere id="1" stroke="aliceblue" strokeWidth={1.5} />
+        <Sphere id="1" strokeWidth={0} />
         <Geographies geography={topoUrl}>
           {({ geographies }) =>
             geographies.map((geo) => (

@@ -5,15 +5,15 @@ import Monthpicker from "./Monthpicker";
 import Legend from "./Legend";
 import Description from "./Description";
 import Loading from "./Loading";
+import Settings from "./Settings";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import fetchData from "../helpers/fetchData";
 import { Geomath } from "../helpers/Geomath";
 
 function App() {
-  // Connect to api endpoint
-  const apiUrl =
-    "https://iigth-portfolio-api-git-main-nimotomato.vercel.app/api/";
+  // Connect to api
+  const apiUrl = "https://iigth-portfolio-api.vercel.app/api/";
 
   // Endpoints
   const negCount = "negCount";
@@ -21,10 +21,19 @@ function App() {
   const news = "news";
 
   // Theme for map and legend
-  const scaleColors = {
-    scale: [0.2, 0.6],
-    colors: ["linen", "coral"],
+  const colorScales = {
+    scaleCurrent: {
+      scale: [0.2, 0.5],
+      colors: ["linen", "coral"],
+    },
+    scaleTotal: {
+      scale: [-0.1, 0.1],
+      colors: ["linen", "cornflowerBlue"],
+    },
   };
+
+  // States for what statistical analysis to chose
+  const [analysisMode, setAnalysisMode] = useState("current");
 
   // States for the dates used in API search query
   const [chosenDates, setChosenDates] = useState();
@@ -32,8 +41,14 @@ function App() {
   // State for dates used in min/max legend values
   const [minMaxDates, setMinMaxDates] = useState();
 
-  // State for news data
+  // State for news data to send to components
   const [data, setData] = useState(new Map());
+
+  // Current timespan fetch
+  const [currentSpanData, setCurrentSpanData] = useState(new Map());
+
+  // Ref for original news data
+  const totalPercentageRef = useRef(new Map());
 
   // Get date min/max range
   async function handleFetchDates() {
@@ -51,24 +66,51 @@ function App() {
     }
   }
 
-  // Fetch date range on component load
-  useEffect(() => {
-    handleFetchDates();
-  }, []);
-
-  // Fetch new data on updated dates with the new helper
-  useEffect(() => {
+  // Get data from specified range
+  async function handleFetchDataFromSpecifiedDates(
+    apiUrl,
+    negCount,
+    chosenDates
+  ) {
     fetchData(apiUrl, negCount, chosenDates)
       .then((result) => {
         if (result) {
-          const ratios = Geomath.getPercentageNew(result);
-          setData(ratios);
+          const ratios = Geomath.getPercentage(result);
+          setCurrentSpanData(ratios);
         }
       })
       .catch((error) => {
         console.log(error);
       });
-  }, [chosenDates]);
+  }
+
+  // Get percentage of total for ref that should never change
+  async function getTotalPercentage(apiUrl, negCount, minMaxDates) {
+    if (minMaxDates) {
+      const dates = Object.values(minMaxDates);
+
+      fetchData(apiUrl, negCount, dates)
+        .then((result) => {
+          if (result) {
+            const ratios = Geomath.getPercentage(result);
+            totalPercentageRef.current = ratios;
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }
+
+  // Fetch date range on component load
+  useEffect(() => {
+    handleFetchDates();
+  }, []);
+
+  // Get percentage of total for ref that should never change
+  useEffect(() => {
+    getTotalPercentage(apiUrl, negCount, minMaxDates);
+  }, [minMaxDates]);
 
   // Handle chosen dates, used in Monthpicker component
   const handleChosenDates = (dates) => {
@@ -85,11 +127,59 @@ function App() {
     setChosenDates(checkedDates);
   };
 
+  const handleSetAnalysisMode = (mode) => {
+    setAnalysisMode(mode);
+  };
+
+  // Update data to send to components
+  useEffect(() => {
+    setData(currentSpanData);
+  }, [currentSpanData]);
+
+  // Get the new percentage compared to total
+  useEffect(() => {
+    if (analysisMode === "mean") {
+      if (currentSpanData.size != 0 && totalPercentageRef.current.size != 0) {
+        // null check
+        const meanData = new Map();
+
+        // Calculate the new data for every region
+        currentSpanData.forEach((value, region) => {
+          console.log();
+          const meanChange = Geomath.getPercentageComparedToTotal(
+            totalPercentageRef.current.get(region),
+            value
+          );
+
+          meanData.set(region, meanChange);
+        });
+
+        console.log(meanData);
+        setData(meanData);
+      }
+    } else {
+      handleFetchDataFromSpecifiedDates(apiUrl, negCount, chosenDates);
+    }
+  }, [chosenDates, analysisMode]);
+
+  const handleColorScales = (mode, colorScales) => {
+    switch (mode) {
+      case "current":
+        return colorScales.scaleCurrent;
+      case "mean":
+        return colorScales.scaleTotal;
+    }
+  };
+
   return (
     <div className="content-container">
       <h1 className="main-title">Is it going to hell?</h1>
       <Description />
-      <Geomap data={data} theme={scaleColors} />
+      <Geomap
+        data={data}
+        theme={handleColorScales(analysisMode, colorScales)}
+      />
+      <Settings handleSetAnalysisMode={handleSetAnalysisMode} />
       {/* Make sure date picker is only loaded after dates have been fetched */}
       <div className="date-legend-container">
         {minMaxDates && (
@@ -100,7 +190,10 @@ function App() {
           />
         )}
         {data.size != 0 ? (
-          <Legend data={data} theme={scaleColors} />
+          <Legend
+            data={data}
+            theme={handleColorScales(analysisMode, colorScales)}
+          />
         ) : (
           <Loading />
         )}
