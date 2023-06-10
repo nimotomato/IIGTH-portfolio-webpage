@@ -1,11 +1,9 @@
 import "../css/Button.css";
 
-
 const Settings = ({ handleSetAnalysisMode }) => {
   // Updates state in App component to be button's ID.
   const handleClick = (e) => {
     handleSetAnalysisMode(e.target.id);
-    console.log(e.target.id);
   };
 
   return (

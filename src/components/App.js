@@ -76,6 +76,7 @@ function App() {
       .then((result) => {
         if (result) {
           const ratios = Geomath.getPercentage(result);
+
           setCurrentSpanData(ratios);
         }
       })
@@ -138,6 +139,10 @@ function App() {
 
   // Get the new percentage compared to total
   useEffect(() => {
+    setData(() => {
+      return new Map();
+    });
+
     if (analysisMode === "mean") {
       if (currentSpanData.size != 0 && totalPercentageRef.current.size != 0) {
         // null check
@@ -145,7 +150,6 @@ function App() {
 
         // Calculate the new data for every region
         currentSpanData.forEach((value, region) => {
-          console.log();
           const meanChange = Geomath.getPercentageComparedToTotal(
             totalPercentageRef.current.get(region),
             value
@@ -154,7 +158,6 @@ function App() {
           meanData.set(region, meanChange);
         });
 
-        console.log(meanData);
         setData(meanData);
       }
     } else {
