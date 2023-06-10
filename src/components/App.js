@@ -10,7 +10,6 @@ import Settings from "./Settings";
 import { useState, useEffect, useRef } from "react";
 import fetchData from "../helpers/fetchData";
 import { Geomath } from "../helpers/Geomath";
-import { endOfMonth } from "date-fns";
 
 function App() {
   // Connect to api
@@ -52,20 +51,9 @@ function App() {
   const [changeFromTotal, setChangeFromTotal] = useState(new Map());
 
   // Updates chosen dates, used in Monthpicker component
-  const handleSelectedDates = (dates, position) => {
-    let fullDateLength = 10;
-
-    // Fix days from missing format due to month input in monthpicker
-    let checkedDates = dates.map((date) => {
-      console.log(date);
-      if (date.length != fullDateLength) {
-        date = date + "-01";
-      }
-      return date;
-    });
-
+  const handleSelectedDates = (dates) => {
     setSelectedDates(() => {
-      return checkedDates;
+      return dates;
     });
   };
 

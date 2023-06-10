@@ -9,15 +9,25 @@ import {
 import topoUrl from "../data/continents.json";
 
 const Geomap = ({ selectedMean, theme, changeFromTotal, analysisMode }) => {
-  // Add data to correct geographic property
-  if (selectedMean) {
-    for (const [region, value] of selectedMean) {
-      topoUrl.objects.continent.geometries.forEach((continent) => {
-        if (continent.properties.continent.toLowerCase() === region) {
-          continent.properties.data = value || 0;
-        }
-      });
+
+  const updateGeometries = (data) => {
+    // Add data to correct geographic property
+    if (data) {
+      for (const [region, value] of data) {
+        topoUrl.objects.continent.geometries.forEach((continent) => {
+          if (continent.properties.continent.toLowerCase() === region) {
+            continent.properties.data = value || 0;
+          }
+        });
+      }
     }
+  }
+
+  // Add data to correct geographic property
+  if (analysisMode === "current") {
+    updateGeometries(selectedMean)
+  } else if (analysisMode === "mean") {
+    updateGeometries(changeFromTotal)
   }
 
   // Set color scale for displaying data
