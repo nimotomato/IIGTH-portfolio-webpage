@@ -16,6 +16,6 @@
     box-shadow: 0px 0px 8px 1px rgb(181, 109, 109);
 }
 
-.stats-button-selected {
+.selected {
     opacity: 1;
 }

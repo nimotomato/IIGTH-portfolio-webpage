@@ -15,7 +15,6 @@ const getQueryString = (apiUrl, chosenDates, endpoint) => {
 // takes base url of API, endpoint of api and date interval of search.
 async function fetchData(apiUrl, endpoint, chosenDates) {
   const queryString = getQueryString(apiUrl, chosenDates, endpoint);
-
   if (!queryString) {
     return null;
   }

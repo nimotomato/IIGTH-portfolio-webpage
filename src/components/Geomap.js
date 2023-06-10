@@ -8,10 +8,10 @@ import {
 
 import topoUrl from "../data/continents.json";
 
-const Geomap = ({ data, theme }) => {
+const Geomap = ({ selectedMean, theme, changeFromTotal, analysisMode }) => {
   // Add data to correct geographic property
-  if (data) {
-    for (const [region, value] of data) {
+  if (selectedMean) {
+    for (const [region, value] of selectedMean) {
       topoUrl.objects.continent.geometries.forEach((continent) => {
         if (continent.properties.continent.toLowerCase() === region) {
           continent.properties.data = value || 0;

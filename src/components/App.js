@@ -10,6 +10,7 @@ import Settings from "./Settings";
 import { useState, useEffect, useRef } from "react";
 import fetchData from "../helpers/fetchData";
 import { Geomath } from "../helpers/Geomath";
+import { endOfMonth } from "date-fns";
 
 function App() {
   // Connect to api
@@ -18,7 +19,6 @@ function App() {
   // Endpoints
   const negCount = "negCount";
   const dates = "dates";
-  const news = "news";
 
   // Theme for map and legend
   const colorScales = {
@@ -32,52 +32,82 @@ function App() {
     },
   };
 
-  // States for what statistical analysis to chose
+  // IMPLEMENT
+  // States for what color to depend scale on
   const [analysisMode, setAnalysisMode] = useState("current");
 
   // States for the dates used in API search query
-  const [chosenDates, setChosenDates] = useState();
+  const [selectedDates, setSelectedDates] = useState([]);
 
-  // State for dates used in min/max legend values
-  const [minMaxDates, setMinMaxDates] = useState();
+  // Ref for dates used in min/max legend values
+  const minMaxDatesRef = useRef([]);
 
-  // State for news data to send to components
-  const [data, setData] = useState(new Map());
+  // State for mean of selected dates
+  const [selectedDatesMean, setSelectedDatesMean] = useState(new Map());
 
-  // Current timespan fetch
-  const [currentSpanData, setCurrentSpanData] = useState(new Map());
+  // State for a total mean, used when calculating change
+  const [meanTotal, setMeanTotal] = useState(new Map());
 
-  // Ref for original news data
-  const totalPercentageRef = useRef(new Map());
+  // State for change selectedDatesMean/totalMean
+  const [changeFromTotal, setChangeFromTotal] = useState(new Map());
+
+  // Updates chosen dates, used in Monthpicker component
+  const handleSelectedDates = (dates, position) => {
+    let fullDateLength = 10;
+
+    // Fix days from missing format due to month input in monthpicker
+    let checkedDates = dates.map((date) => {
+      console.log(date);
+      if (date.length != fullDateLength) {
+        date = date + "-01";
+      }
+      return date;
+    });
+
+    setSelectedDates(() => {
+      return checkedDates;
+    });
+  };
 
   // Get date min/max range
-  async function handleFetchDates() {
+  async function handleFetchMinMaxDates() {
     try {
       const response = await fetch(`${apiUrl}${dates}`);
+
       const data = await response.json();
 
       // Create the default days (min, max) for the query string
       const startDate = data.startDate.split("T")[0];
+
       const endDate = data.endDate.split("T")[0];
-      setChosenDates([startDate, endDate]);
-      setMinMaxDates({ startDate: startDate, endDate: endDate });
+
+      // Update minimum and maximum dates
+      minMaxDatesRef.current = { startDate: startDate, endDate: endDate };
+
+      // Update the selected dates, changed later in monthpicker component.
+      setSelectedDates(() => {
+        return [startDate, endDate];
+      });
     } catch (e) {
       console.log(e);
     }
   }
 
-  // Get data from specified range
-  async function handleFetchDataFromSpecifiedDates(
-    apiUrl,
-    negCount,
-    chosenDates
-  ) {
-    fetchData(apiUrl, negCount, chosenDates)
+  const handleSetAnalysisMode = (mode) => {
+    setAnalysisMode(mode);
+  };
+
+  // Get mean between min and max dates
+  async function handleFetchTotalMean(apiUrl, negCount, chosenDates) {
+    const dates = Object.values(chosenDates);
+
+    fetchData(apiUrl, negCount, dates)
       .then((result) => {
         if (result) {
           const ratios = Geomath.getPercentage(result);
-
-          setCurrentSpanData(ratios);
+          setMeanTotal(() => {
+            return ratios;
+          });
         }
       })
       .catch((error) => {
@@ -85,85 +115,72 @@ function App() {
       });
   }
 
-  // Get percentage of total for ref that should never change
-  async function getTotalPercentage(apiUrl, negCount, minMaxDates) {
-    if (minMaxDates) {
-      const dates = Object.values(minMaxDates);
+  // Calculate mean between selectedDatesMean and totalMean
+  const getChangeFromTotal = (selectedDatesMean, meanTotal) => {
+    if (minMaxDatesRef.current.length != 0) {
+      const changesFromTotal = new Map();
+      const subPercentage = Geomath.getPercentage(selectedDatesMean);
 
-      fetchData(apiUrl, negCount, dates)
-        .then((result) => {
-          if (result) {
-            const ratios = Geomath.getPercentage(result);
-            totalPercentageRef.current = ratios;
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      // Calculate the new data for every region
+      subPercentage.forEach((percentage, region) => {
+        const changeFromTotal = Geomath.getPercentageComparedToTotal(
+          percentage,
+          meanTotal.get(region)
+        );
+
+        changesFromTotal.set(region, changeFromTotal);
+      });
+
+      setChangeFromTotal(() => {
+        return changesFromTotal;
+      });
     }
+  };
+
+  // Get mean between selected dates and changeFromTotal
+  async function handleFetchData(apiUrl, negCount, chosenDates, meanTotal) {
+    await fetchData(apiUrl, negCount, chosenDates)
+      .then((result) => {
+        if (result) {
+          const ratios = Geomath.getPercentage(result);
+
+          setSelectedDatesMean(() => {
+            return ratios;
+          });
+
+          if (meanTotal) {
+            // changeFromTotal will not update
+            getChangeFromTotal(result, meanTotal);
+          }
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
-  // Fetch date range on component load
+  // Setup 1
+  // Set minMax date range on component load only
   useEffect(() => {
-    handleFetchDates();
+    handleFetchMinMaxDates();
   }, []);
 
-  // Get percentage of total for ref that should never change
+  // Setup 2
+  // Trigger function to get mean of total news as soon as we have minMaxDates
   useEffect(() => {
-    getTotalPercentage(apiUrl, negCount, minMaxDates);
-  }, [minMaxDates]);
+    handleFetchTotalMean(apiUrl, negCount, minMaxDatesRef.current);
+  }, [minMaxDatesRef.current]);
 
-  // Handle chosen dates, used in Monthpicker component
-  const handleChosenDates = (dates) => {
-    let fullDateLength = 10;
-
-    // Fix days from missing format due to month input in monthpicker
-    let checkedDates = dates.map((date) => {
-      if (date.length != fullDateLength) {
-        date = date + "-01";
-      }
-      return date;
+  // Active stage 1
+  // Update selectedDatesMaan and totalMean
+  useEffect(() => {
+    // Reset state when this is called to allow loading circles to come through.
+    setSelectedDatesMean(() => {
+      new Map();
     });
 
-    setChosenDates(checkedDates);
-  };
-
-  const handleSetAnalysisMode = (mode) => {
-    setAnalysisMode(mode);
-  };
-
-  // Update data to send to components
-  useEffect(() => {
-    setData(currentSpanData);
-  }, [currentSpanData]);
-
-  // Get the new percentage compared to total
-  useEffect(() => {
-    setData(() => {
-      return new Map();
-    });
-
-    if (analysisMode === "mean") {
-      if (currentSpanData.size != 0 && totalPercentageRef.current.size != 0) {
-        // null check
-        const meanData = new Map();
-
-        // Calculate the new data for every region
-        currentSpanData.forEach((value, region) => {
-          const meanChange = Geomath.getPercentageComparedToTotal(
-            totalPercentageRef.current.get(region),
-            value
-          );
-
-          meanData.set(region, meanChange);
-        });
-
-        setData(meanData);
-      }
-    } else {
-      handleFetchDataFromSpecifiedDates(apiUrl, negCount, chosenDates);
-    }
-  }, [chosenDates, analysisMode]);
+    handleFetchData(apiUrl, negCount, selectedDates, meanTotal);
+  }, [selectedDates, meanTotal]);
 
   const handleColorScales = (mode, colorScales) => {
     switch (mode) {
@@ -179,23 +196,26 @@ function App() {
       <h1 className="main-title">Is it going to hell?</h1>
       <Description />
       <Geomap
-        data={data}
+        selectedMean={selectedDatesMean}
+        changeFromTotal={changeFromTotal}
         theme={handleColorScales(analysisMode, colorScales)}
+        analysisMode={analysisMode}
       />
       <Settings handleSetAnalysisMode={handleSetAnalysisMode} />
       {/* Make sure date picker is only loaded after dates have been fetched */}
       <div className="date-legend-container">
-        {minMaxDates && (
+        {minMaxDatesRef.current.length != 0 && (
           <Monthpicker
-            chosenDates={chosenDates}
-            onChose={handleChosenDates}
-            minMaxDates={minMaxDates}
+            selectedDays={selectedDates}
+            onChose={handleSelectedDates}
+            minMaxDates={minMaxDatesRef.current}
           />
         )}
-        {data.size != 0 ? (
+        {selectedDatesMean && selectedDatesMean.size != 0 ? (
           <Legend
-            data={data}
+            selectedDatesMean={selectedDatesMean}
             theme={handleColorScales(analysisMode, colorScales)}
+            changeFromTotal={changeFromTotal}
           />
         ) : (
           <Loading />

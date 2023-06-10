@@ -11,7 +11,7 @@ const Settings = ({ handleSetAnalysisMode }) => {
       <button
         id="current"
         className="stats-button"
-        title="Current probability of bad news."
+        title="Change color to vary depending on current probability of bad news."
         onClick={(e) => handleClick(e)}
       >
         Current
@@ -19,7 +19,7 @@ const Settings = ({ handleSetAnalysisMode }) => {
       <button
         id="mean"
         className="stats-button"
-        title="Change in probability for selected period compared to total mean."
+        title="Change color to vary depending on probability for selected period compared to total mean."
         onClick={(e) => handleClick(e)}
       >
         Change

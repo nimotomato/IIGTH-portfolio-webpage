@@ -1,8 +1,8 @@
 import "../css/Datepicker.css";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
-const Monthpicker = ({ chosenDates, onChose, minMaxDates }) => {
-  const [startDate, endDate] = chosenDates;
+const Monthpicker = ({ selectedDays, onChose, minMaxDates }) => {
+  const [startDate, endDate] = selectedDays;
 
   const [startMonth, setStartMonth] = useState(startDate.slice(0, 7));
 
