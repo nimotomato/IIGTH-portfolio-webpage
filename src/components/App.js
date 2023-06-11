@@ -26,7 +26,7 @@ function App() {
       colors: ["linen", "coral"],
     },
     scaleTotal: {
-      scale: [-0.1, 0.1],
+      scale: [0, 0.1],
       colors: ["linen", "cornflowerBlue"],
     },
   };
@@ -174,7 +174,7 @@ function App() {
     switch (mode) {
       case "current":
         return colorScales.scaleCurrent;
-      case "mean":
+      case "change":
         return colorScales.scaleTotal;
     }
   };
@@ -204,6 +204,7 @@ function App() {
             selectedDatesMean={selectedDatesMean}
             theme={handleColorScales(analysisMode, colorScales)}
             changeFromTotal={changeFromTotal}
+            analysisMode={analysisMode}
           />
         ) : (
           <Loading />

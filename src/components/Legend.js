@@ -1,11 +1,13 @@
 import "../css/Legend.css";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { scaleLinear } from "d3-scale";
 
-const Legend = ({ selectedDatesMean, theme, changeFromTotal }) => {
-  // Set color scale for background color.
-  const colorScale = scaleLinear(theme.scale, theme.colors);
-
+const Legend = ({
+  selectedDatesMean,
+  theme,
+  changeFromTotal,
+  analysisMode,
+}) => {
   const [listItems, setListItems] = useState([]);
 
   const [sortedData, setSortedData] = useState();
@@ -23,36 +25,50 @@ const Legend = ({ selectedDatesMean, theme, changeFromTotal }) => {
         return 0;
       });
     });
-  }, [selectedDatesMean]);
+  }, []);
 
   //Unordered list with list items for each region and data
-  const handleListItems = (sortedData, changeFromTotal) => {
-    const listItems = sortedData.map((item) => {
-      return (
-        <li
-          className="legend-list-item"
-          style={{ backgroundColor: colorScale(item[1]) }}
-          key={item[0]}
-        >
-          {item[0]}:
-          <br />
-          {(item[1] * 100).toFixed(2) + "%"} (
-          {(changeFromTotal.get(item[0]) * 100).toFixed(2)}% D)
-        </li>
-      );
-    });
+  const handleListItems = useCallback(
+    (sortedData, changeFromTotal, analysisMode) => {
+      const colorScale = scaleLinear(theme.scale, theme.colors);
 
-    setListItems(() => {
-      return listItems;
-    });
-  };
+      const listItems = sortedData.map((item) => {
+        let bgColor = {};
+        if (analysisMode === "current") {
+          bgColor["backgroundColor"] = colorScale(item[1]);
+        } else {
+          bgColor["backgroundColor"] = colorScale(
+            Math.abs(changeFromTotal.get(item[0]))
+          );
+        }
+
+        return (
+          <li
+            className="legend-list-item"
+            style={{ backgroundColor: bgColor["backgroundColor"] }}
+            key={item[0]}
+          >
+            {item[0]}:
+            <br />
+            {(item[1] * 100).toFixed(2) + "%"} (
+            {(changeFromTotal.get(item[0]) * 100).toFixed(2)}% D)
+          </li>
+        );
+      });
+
+      setListItems(() => {
+        return listItems;
+      });
+    },
+    [theme, analysisMode, changeFromTotal]
+  );
 
   // Calls handleList on load and whenever regionData is changed.
   useEffect(() => {
     if (sortedData) {
-      handleListItems(sortedData, changeFromTotal);
+      handleListItems(sortedData, changeFromTotal, analysisMode);
     }
-  }, [sortedData]);
+  }, [sortedData, analysisMode]);
 
   return (
     <div className="legend-container">

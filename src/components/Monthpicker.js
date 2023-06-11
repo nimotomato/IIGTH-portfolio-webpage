@@ -2,7 +2,6 @@ import "../css/Datepicker.css";
 import { useState } from "react";
 import { endOfMonth, startOfMonth, parseISO, format } from "date-fns";
 
-
 const Monthpicker = ({ selectedDays, onChose, minMaxDates }) => {
   const [startDate, endDate] = selectedDays;
 
@@ -12,27 +11,27 @@ const Monthpicker = ({ selectedDays, onChose, minMaxDates }) => {
 
   const handleStartMonthInput = (date) => {
     date = startOfMonth(parseISO(date));
-    date = format(date, 'yyyy-MM-dd')
+    date = format(date, "yyyy-MM-dd");
 
-    setStartMonth((startMonth) => {
+    setStartMonth(() => {
       return date;
     });
 
     setEndMonth((endMonth) => endMonth);
 
-    onChose(([date || null, endMonth]))
+    onChose([date || null, endMonth]);
   };
 
   const handleEndMonthInput = (date) => {
     date = endOfMonth(parseISO(date));
-    date = format(date, 'yyyy-MM-dd')
+    date = format(date, "yyyy-MM-dd");
     setStartMonth((startMonth) => startMonth);
 
-    setEndMonth((endMonth) => {
+    setEndMonth(() => {
       return date;
     });
 
-    onChose(([startMonth, date || null]))
+    onChose([startMonth, date || null]);
   };
 
   const formatMinMaxDates = (date) => {
