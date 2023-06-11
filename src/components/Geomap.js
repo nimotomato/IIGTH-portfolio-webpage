@@ -8,16 +8,25 @@ import {
 
 import topoUrl from "../data/continents.json";
 
-const Geomap = ({ data, theme }) => {
-  // Add data to correct geographic property
-  if (data) {
-    for (const [region, value] of data) {
-      topoUrl.objects.continent.geometries.forEach((continent) => {
-        if (continent.properties.continent.toLowerCase() === region) {
-          continent.properties.data = value || 0;
-        }
-      });
+const Geomap = ({ selectedMean, theme, changeFromTotal, analysisMode }) => {
+  const updateGeometries = (data) => {
+    // Add data to correct geographic property
+    if (data) {
+      for (const [region, value] of data) {
+        topoUrl.objects.continent.geometries.forEach((continent) => {
+          if (continent.properties.continent.toLowerCase() === region) {
+            continent.properties.data = Math.abs(value) || 0;
+          }
+        });
+      }
     }
+  };
+
+  // Add data to correct geographic property
+  if (analysisMode === "current") {
+    updateGeometries(selectedMean);
+  } else if (analysisMode === "change") {
+    updateGeometries(changeFromTotal);
   }
 
   // Set color scale for displaying data
@@ -32,7 +41,7 @@ const Geomap = ({ data, theme }) => {
         }}
         width={600}
         height={300}
-        projection="geoEqualEarth" //geoAzimuthalEqualAreageoEqualEarth
+        projection="geoEqualEarth"
       >
         <Sphere id="1" strokeWidth={0} />
         <Geographies geography={topoUrl}>
@@ -43,7 +52,7 @@ const Geomap = ({ data, theme }) => {
                 geography={geo}
                 fill={
                   geo.properties.data
-                    ? colorScale(geo.properties.data)
+                    ? colorScale(Math.abs(geo.properties.data))
                     : "#F5F4F6"
                 }
                 stroke="darkslategrey"

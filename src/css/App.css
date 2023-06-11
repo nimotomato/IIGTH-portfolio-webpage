@@ -1,9 +1,9 @@
-body{
+body {
     font-family: 'Montserrat', sans-serif;
     background-color: rgb(28, 39, 39);
 }
 
-.content-container{
+.content-container {
     margin: 0.5em;
     display: flex;
     flex-direction: column;
@@ -12,7 +12,7 @@ body{
     min-height: 98vh;
 }
 
-.main-title{
+.main-title {
     font-size: 3em;
     text-align: center;
     padding: 0;
@@ -20,60 +20,58 @@ body{
     margin-top: -.05em;
     text-transform: uppercase;
     font-family: 'Creepster', cursive;
-    color:rgb(223, 53, 53);
+    color: rgb(223, 53, 53);
 }
 
-.map-container{
+.map-container {
     width: 23em;
 }
 
-.date-legend-container{
+.date-legend-container {
     display: flex;
-    flex-direction: column;  
+    flex-direction: column;
     align-items: center;
 }
 
 @media only screen and (max-width: 400px) {
-    .main-title{
+    .main-title {
         font-size: 3em;
     }
 
-    .map-container{
+    .map-container {
         width: 20em;
     }
 }
 
 @media only screen and (min-width: 550px) {
-    .main-title{
+    .main-title {
         font-size: 4.5em;
     }
 
-    .map-container{
+    .map-container {
         width: 38em;
     }
 }
 
 @media only screen and (min-width: 800px) {
-    .main-title{
+    .main-title {
         font-size: 6em;
         margin-bottom: -0.2em;
     }
 
-    .map-container{
+    .map-container {
         width: 50em;
     }
 }
 
 @media only screen and (min-width: 1025px) {
-    .main-title{
+    .main-title {
         font-size: 7em;
     }
 
-    .map-container{
+    .map-container {
         width: 48em;
     }
 }
 
-@media only screen and (min-width: 1280px) {
-
-}
+@media only screen and (min-width: 1280px) {}

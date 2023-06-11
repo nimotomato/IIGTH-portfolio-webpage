@@ -26,6 +26,14 @@
     letter-spacing: 1px;
     width: 14em;
     height: fit-content;
+    box-shadow: 0px 0px 2px rgb(181, 109, 109);
+    margin: 0.1em;
+    transform: 1;
+}
+
+.legend-list-item:hover {
+    box-shadow: 0px 0px 6px rgb(181, 109, 109);
+
 }
 
 @media only screen and (max-width: 400px) {}

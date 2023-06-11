@@ -1,40 +1,37 @@
 import "../css/Datepicker.css";
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { endOfMonth, startOfMonth, parseISO, format } from "date-fns";
 
-const Monthpicker = ({ chosenDates, onChose, minMaxDates }) => {
-  const [startDate, endDate] = chosenDates;
+const Monthpicker = ({ selectedDays, onChose, minMaxDates }) => {
+  const [startDate, endDate] = selectedDays;
 
-  const [startMonth, setStartMonth] = useState(startDate.slice(0, 7));
+  const [startMonth, setStartMonth] = useState(startDate);
 
-  const [endMonth, setEndMonth] = useState(endDate.slice(0, 7));
+  const [endMonth, setEndMonth] = useState(endDate);
 
   const handleStartMonthInput = (date) => {
-    let input = new Date(date);
-    let startMonthString = input.toISOString().split("T")[0];
+    date = startOfMonth(parseISO(date));
+    date = format(date, "yyyy-MM-dd");
 
-    setStartMonth((startMonth) => {
-      startMonth = startMonthString;
-      return startMonth;
+    setStartMonth(() => {
+      return date;
     });
 
     setEndMonth((endMonth) => endMonth);
 
-    onChose([startMonthString || null, endMonth]);
+    onChose([date || null, endMonth]);
   };
 
   const handleEndMonthInput = (date) => {
-    let input = new Date(date);
-    input.setMonth(input.getMonth() + 1);
-    let endMonthString = input.toISOString().split("T")[0];
-
+    date = endOfMonth(parseISO(date));
+    date = format(date, "yyyy-MM-dd");
     setStartMonth((startMonth) => startMonth);
 
-    setEndMonth((endMonth) => {
-      endMonth = endMonthString;
-      return endMonth;
+    setEndMonth(() => {
+      return date;
     });
 
-    onChose([startMonth, endMonthString || null]);
+    onChose([startMonth, date || null]);
   };
 
   const formatMinMaxDates = (date) => {
